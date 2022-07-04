@@ -24,7 +24,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Notify about a new release
-      uses: ba-st-actions/email-release-notification@v3.0.0
+      uses: daysofwonder/sendgrid-notification-action@v1.2
       env:
         SENDGRID_API_TOKEN: ${{ secrets.SENDGRID_API_TOKEN }}
         SENDER_EMAIL: ${{ secrets.SENDER_EMAIL }}
