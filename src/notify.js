@@ -54,6 +54,7 @@ setCredentials();
 run(process.env.DISTRIBUTION_LISTS)
     .catch((error) => {
         console.error(error);
+        console.error(error.response.body.errors.join("\n"));
         core.setFailed(error.message);
         process.exit(1);
     });
