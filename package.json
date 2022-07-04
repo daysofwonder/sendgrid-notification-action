@@ -19,6 +19,9 @@
   "homepage": "https://github.com/daysofwonder/sendgrid-notification-action#readme",
   "dependencies": {
     "@actions/core": "^1.9.0",
-    "@actions/github": "^5.0.3"
+    "@actions/github": "^5.0.3",
+    "@sendgrid/mail": "^7.7.0",
+    "axios": "^0.27.2",
+    "showdown": "^2.1.0"
   }
 }
