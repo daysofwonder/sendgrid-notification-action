@@ -1,0 +1,5 @@
+name: 'Sendgrid email notification'
+description: 'Send email with sendgrid for notification without recipients'
+runs:
+  using: 'node16'
+  main: 'src/notify.js'
