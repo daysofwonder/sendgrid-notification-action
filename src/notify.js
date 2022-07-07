@@ -1,8 +1,10 @@
 const fs = require('fs');
 const axios = require('axios');
+const showdown = require('showdown');
 const sendgridMail = require('@sendgrid/mail');
 const sendgridClient = require('@sendgrid/client');
 const core = require('@actions/core');
+const github = require('@actions/github');
 const zlib = require('zlib');
 
 const setCredentials = () => {
