@@ -15,6 +15,7 @@ const setCredentials = () => {
 async function prepareMessage() {
     const { repository, release } = JSON.parse(fs.readFileSync(process.env.GITHUB_EVENT_PATH, 'utf8'));
 
+    const teamname = process.env.SENDER_EMAIL_TEAM;
     const converter = new showdown.Converter();
     const repoName = repository.name;
     const repoURL = repository.html_url;
@@ -27,7 +28,7 @@ async function prepareMessage() {
 
     // Templates
     const subject = `[ANN] ${repoName} ${releaseVersion} [${releaseName}] released!`;
-    const footer = `\n\nRegards,\n\nThe ${process.env.SENDER_EMAIL_TEAM} team`;
+    const footer = `\n\nRegards,\n\nThe ${teamname} team`;
     const header = `[${repoName}](${repoURL})${repoDescription} reached it's [${releaseVersion}](${releaseURL}) version.`;
 
     const releaseBody = `<html><head><title>${subject}</title></head><body>` + converter.makeHtml(`#${header}\n\n${release.body}${footer}`).replace('\n', "") + '<div style="text-align: center;font-size:10px;"><p><a href="<%asm_group_unsubscribe_raw_url%>">Unsubscribe</a></p></div></body></html>';
@@ -88,14 +89,15 @@ function sleep(ms) {
 }
 
 async function getContacts(distributionList) {
-    console.log({ // get contacts from list
-        url: `/v3/marketing/contacts/exports`,
-        method: 'POST',
-        body: {
-            list_ids: [distributionList],
-            file_type: 'json'
-        }
-    });
+    if (!distributionList) {
+        throw new Error('DISTRIBUTION_LISTS env variables is mandatory and can\'t be empty');
+    }
+    if (/^.*@.*,.*$/.exec(distributionList)) {
+        return distributionList.split(',').map((eml) => {
+            return { email: eml };
+        });
+    }
+
     const res = await sendgridClient.request({ // get contacts from list
         url: `/v3/marketing/contacts/exports`,
         method: 'POST',
